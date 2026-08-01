@@ -2,7 +2,7 @@ import io
 import streamlit as st
 from google import genai
 
-# Page Configuration (Must be first streamlit command)
+# Page Configuration
 st.set_page_config(
     page_title="Skill Nest - AP Syllabus Portal",
     page_icon="🎓",
@@ -12,11 +12,10 @@ st.set_page_config(
 
 # Safely fetch the API key from Streamlit Secrets
 if "GEMINI_API_KEY" in st.secrets:
-    # CORRECT WAY:
-api_key = st.secrets["GEMINI_API_KEY"]
-client = genai.Client(api_key=api_key)
+    api_key = st.secrets["GEMINI_API_KEY"]
+    client = genai.Client(api_key=api_key)
 else:
-    st.error("🚨 Configuration Error: `GEMINI_API_KEY` is missing from your Streamlit Secrets settings. Please add it in your Streamlit dashboard.")
+    st.error("🚨 Configuration Error: `GEMINI_API_KEY` is missing from your Streamlit Secrets settings.")
     st.stop()
 
 # ReportLab modules for PDF generation
