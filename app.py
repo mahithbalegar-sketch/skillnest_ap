@@ -2,8 +2,13 @@ import io
 import streamlit as st
 from google import genai  # Modern unified Google GenAI SDK
 
-# Initialize the official Google GenAI client (100% Free Tier via Google AI Studio)
-client = genai.Client(api_key="AQ.Ab8RN6KYbjckH_V1CzP210ss3W12l0C0ZqXdAVnWBTKnjWmfZg")
+# Initialize the official Google GenAI client securely using Streamlit Secrets
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+    client = genai.Client(api_key=api_key)
+except Exception:
+    # Fallback initialization if secrets are missing locally
+    client = genai.Client()
 
 # ReportLab modules for PDF generation
 from reportlab.lib import colors
@@ -277,7 +282,7 @@ elif st.session_state.current_page == "plans":
             st.markdown("**Complete Comprehensive Package**")
             st.divider()
             st.markdown("✔️ Complete PDF Handbooks")
-            st.markdown("✔️ **Study with AI** Custom Assistant (Powered by Free Gemini API)")
+            st.markdown("✔️ **Study with AI** Custom Assistant (Powered by Gemini API)")
             if st.button("Select Premium Plan", key="btn_prem"):
                 st.session_state.plan = "Premium"
                 st.session_state.current_page = "payment"
@@ -362,7 +367,7 @@ elif st.session_state.current_page == "dashboard":
             with st.spinner(f"{ai_name} is thinking..."):
                 try:
                     response = client.models.generate_content(
-                        model='gemini-3.5-flash',
+                        model='gemini-2.5-flash',
                         contents=f"""You are {ai_name}, an expert educational AI tutor for {st.session_state.grade} AP State Board students. 
                         Answer this student's question clearly and concisely: {user_query}
 
@@ -404,4 +409,3 @@ elif st.session_state.current_page == "dashboard":
         st.session_state.user = None
         st.session_state.plan = None
         st.session_state.current_page = "login"
-        st.rerun()
