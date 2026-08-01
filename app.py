@@ -12,7 +12,7 @@ st.set_page_config(
 
 # Safely fetch the API key from Streamlit Secrets
 if "GEMINI_API_KEY" in st.secrets:
-    api_key = st.secrets["GEMINI_API_KEY"]
+    api_key = st.secrets["AQ.Ab8RN6KYbjckH_V1CzP210ss3W12l0C0ZqXdAVnWBTKnjWmfZg"]
     client = genai.Client(api_key=api_key)
 else:
     st.error("🚨 Configuration Error: `GEMINI_API_KEY` is missing from your Streamlit Secrets settings. Please add it in your Streamlit dashboard.")
