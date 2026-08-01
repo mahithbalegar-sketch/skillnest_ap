@@ -1,14 +1,22 @@
 import io
 import streamlit as st
-from google import genai  # Modern unified Google GenAI SDK
+from google import genai
 
-# Initialize the official Google GenAI client securely using Streamlit Secrets
-try:
+# Page Configuration (Must be first streamlit command)
+st.set_page_config(
+    page_title="Skill Nest - AP Syllabus Portal",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+# Safely fetch the API key from Streamlit Secrets
+if "GEMINI_API_KEY" in st.secrets:
     api_key = st.secrets["GEMINI_API_KEY"]
     client = genai.Client(api_key=api_key)
-except Exception:
-    # Fallback initialization if secrets are missing locally
-    client = genai.Client()
+else:
+    st.error("🚨 Configuration Error: `GEMINI_API_KEY` is missing from your Streamlit Secrets settings. Please add it in your Streamlit dashboard.")
+    st.stop()
 
 # ReportLab modules for PDF generation
 from reportlab.lib import colors
